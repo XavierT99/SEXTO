@@ -1,0 +1,25 @@
+url
+
+www.google.com?op=todos
+
+http://localhost/sexto/getpost/controllers/alumnos.controller.php?op=todos
+
+controlador
+
+$_GET["op"]
+
+// esto no mira el usuario
+$_POST["cedula"]
+
+-------------------------------------------------
+
+url
+www.google.com?op=todos
+localhost/sexto/proyectos/02getpost/home.php?op=1
+
+http://localhost/sexto/proyectos/02getpost/controllers/alumnos.controller.php?op=todos
+
+Controlador
+$_GET["op"]
+//esto no mira el usuario
+$_POST["cedula"]
