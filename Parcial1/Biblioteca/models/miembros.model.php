@@ -1,44 +1,38 @@
 <?php
 require_once('../config/config.php');
+
 class Miembros
 {
-    public function todos()
+    public function todos() //select * from miembros
     {
         $con = new ClaseConectar();
         $con = $con->ProcedimientoParaConectar();
         $cadena = "SELECT * FROM `miembros`";
-        $stmt = $con->prepare($cadena);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $datos = mysqli_query($con, $cadena);
         $con->close();
-        return $result;
+        return $datos;
     }
 
-    public function uno($miembro_id)
+    public function uno($miembro_id) //select * from miembros where miembro_id = $miembro_id
     {
         $con = new ClaseConectar();
         $con = $con->ProcedimientoParaConectar();
-        $cadena = "SELECT * FROM `miembros` WHERE `miembro_id` = ?";
-        $stmt = $con->prepare($cadena);
-        $stmt->bind_param("i", $miembro_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $cadena = "SELECT * FROM `miembros` WHERE `miembro_id` = $miembro_id";
+        $datos = mysqli_query($con, $cadena);
         $con->close();
-        return $result;
+        return $datos;
     }
 
-    public function insertar($nombre, $apellido, $email, $fecha_suscripcion)
+    public function insertar($nombre, $apellido, $email, $fecha_suscripcion) //insert into miembros
     {
         try {
             $con = new ClaseConectar();
             $con = $con->ProcedimientoParaConectar();
-            $cadena = "INSERT INTO `miembros` (`nombre`, `apellido`, `email`, `fecha_suscripcion`) VALUES (?, ?, ?, ?)";
-            $stmt = $con->prepare($cadena);
-            $stmt->bind_param("ssss", $nombre, $apellido, $email, $fecha_suscripcion);
-            if ($stmt->execute()) {
+            $cadena = "INSERT INTO `miembros`(`nombre`, `apellido`, `email`, `fecha_suscripcion`) VALUES ('$nombre','$apellido','$email','$fecha_suscripcion')";
+            if (mysqli_query($con, $cadena)) {
                 return $con->insert_id;
             } else {
-                return $stmt->error;
+                return $con->error;
             }
         } catch (Exception $th) {
             return $th->getMessage();
@@ -47,18 +41,16 @@ class Miembros
         }
     }
 
-    public function actualizar($miembro_id, $nombre, $apellido, $email, $fecha_suscripcion)
+    public function actualizar($miembro_id, $nombre, $apellido, $email, $fecha_suscripcion) //update miembros
     {
         try {
             $con = new ClaseConectar();
             $con = $con->ProcedimientoParaConectar();
-            $cadena = "UPDATE `miembros` SET `nombre` = ?, `apellido` = ?, `email` = ?, `fecha_suscripcion` = ? WHERE `miembro_id` = ?";
-            $stmt = $con->prepare($cadena);
-            $stmt->bind_param("sssii", $nombre, $apellido, $email, $fecha_suscripcion, $miembro_id);
-            if ($stmt->execute()) {
+            $cadena = "UPDATE `miembros` SET `nombre`='$nombre',`apellido`='$apellido',`email`='$email',`fecha_suscripcion`='$fecha_suscripcion' WHERE `miembro_id` = $miembro_id";
+            if (mysqli_query($con, $cadena)) {
                 return $miembro_id;
             } else {
-                return $stmt->error;
+                return $con->error;
             }
         } catch (Exception $th) {
             return $th->getMessage();
@@ -67,18 +59,16 @@ class Miembros
         }
     }
 
-    public function eliminar($miembro_id)
+    public function eliminar($miembro_id) //delete from miembros
     {
         try {
             $con = new ClaseConectar();
             $con = $con->ProcedimientoParaConectar();
-            $cadena = "DELETE FROM `miembros` WHERE `miembro_id` = ?";
-            $stmt = $con->prepare($cadena);
-            $stmt->bind_param("i", $miembro_id);
-            if ($stmt->execute()) {
+            $cadena = "DELETE FROM `miembros` WHERE `miembro_id` = $miembro_id";
+            if (mysqli_query($con, $cadena)) {
                 return 1;
             } else {
-                return $stmt->error;
+                return $con->error;
             }
         } catch (Exception $th) {
             return $th->getMessage();

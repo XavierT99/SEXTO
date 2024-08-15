@@ -1,44 +1,38 @@
 <?php
 require_once('../config/config.php');
+
 class Prestamos
 {
-    public function todos()
+    public function todos() //select * from prestamos
     {
         $con = new ClaseConectar();
         $con = $con->ProcedimientoParaConectar();
         $cadena = "SELECT * FROM `prestamos`";
-        $stmt = $con->prepare($cadena);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $datos = mysqli_query($con, $cadena);
         $con->close();
-        return $result;
+        return $datos;
     }
 
-    public function uno($prestamo_id)
+    public function uno($prestamo_id) //select * from prestamos where prestamo_id = $prestamo_id
     {
         $con = new ClaseConectar();
         $con = $con->ProcedimientoParaConectar();
-        $cadena = "SELECT * FROM `prestamos` WHERE `prestamo_id` = ?";
-        $stmt = $con->prepare($cadena);
-        $stmt->bind_param("i", $prestamo_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $cadena = "SELECT * FROM `prestamos` WHERE `prestamo_id` = $prestamo_id";
+        $datos = mysqli_query($con, $cadena);
         $con->close();
-        return $result;
+        return $datos;
     }
 
-    public function insertar($libro_id, $miembro_id, $fecha_prestamo, $fecha_devolucion)
+    public function insertar($libro_id, $miembro_id, $fecha_prestamo, $fecha_devolucion) //insert into prestamos
     {
         try {
             $con = new ClaseConectar();
             $con = $con->ProcedimientoParaConectar();
-            $cadena = "INSERT INTO `prestamos` (`libro_id`, `miembro_id`, `fecha_prestamo`, `fecha_devolucion`) VALUES (?, ?, ?, ?)";
-            $stmt = $con->prepare($cadena);
-            $stmt->bind_param("iiss", $libro_id, $miembro_id, $fecha_prestamo, $fecha_devolucion);
-            if ($stmt->execute()) {
+            $cadena = "INSERT INTO `prestamos`(`libro_id`, `miembro_id`, `fecha_prestamo`, `fecha_devolucion`) VALUES ('$libro_id','$miembro_id','$fecha_prestamo','$fecha_devolucion')";
+            if (mysqli_query($con, $cadena)) {
                 return $con->insert_id;
             } else {
-                return $stmt->error;
+                return $con->error;
             }
         } catch (Exception $th) {
             return $th->getMessage();
@@ -47,18 +41,16 @@ class Prestamos
         }
     }
 
-    public function actualizar($prestamo_id, $libro_id, $miembro_id, $fecha_prestamo, $fecha_devolucion)
+    public function actualizar($prestamo_id, $libro_id, $miembro_id, $fecha_prestamo, $fecha_devolucion) //update prestamos
     {
         try {
             $con = new ClaseConectar();
             $con = $con->ProcedimientoParaConectar();
-            $cadena = "UPDATE `prestamos` SET `libro_id` = ?, `miembro_id` = ?, `fecha_prestamo` = ?, `fecha_devolucion` = ? WHERE `prestamo_id` = ?";
-            $stmt = $con->prepare($cadena);
-            $stmt->bind_param("iissi", $libro_id, $miembro_id, $fecha_prestamo, $fecha_devolucion, $prestamo_id);
-            if ($stmt->execute()) {
+            $cadena = "UPDATE `prestamos` SET `libro_id`='$libro_id',`miembro_id`='$miembro_id',`fecha_prestamo`='$fecha_prestamo',`fecha_devolucion`='$fecha_devolucion' WHERE `prestamo_id` = $prestamo_id";
+            if (mysqli_query($con, $cadena)) {
                 return $prestamo_id;
             } else {
-                return $stmt->error;
+                return $con->error;
             }
         } catch (Exception $th) {
             return $th->getMessage();
@@ -67,18 +59,16 @@ class Prestamos
         }
     }
 
-    public function eliminar($prestamo_id)
+    public function eliminar($prestamo_id) //delete from prestamos
     {
         try {
             $con = new ClaseConectar();
             $con = $con->ProcedimientoParaConectar();
-            $cadena = "DELETE FROM `prestamos` WHERE `prestamo_id` = ?";
-            $stmt = $con->prepare($cadena);
-            $stmt->bind_param("i", $prestamo_id);
-            if ($stmt->execute()) {
+            $cadena = "DELETE FROM `prestamos` WHERE `prestamo_id` = $prestamo_id";
+            if (mysqli_query($con, $cadena)) {
                 return 1;
             } else {
-                return $stmt->error;
+                return $con->error;
             }
         } catch (Exception $th) {
             return $th->getMessage();
@@ -87,4 +77,3 @@ class Prestamos
         }
     }
 }
-?>

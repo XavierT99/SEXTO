@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-08-2024 a las 05:42:46
+-- Tiempo de generación: 15-08-2024 a las 20:23:03
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -32,8 +32,15 @@ CREATE TABLE `libros` (
   `titulo` varchar(255) NOT NULL,
   `autor` varchar(255) NOT NULL,
   `genero` varchar(100) DEFAULT NULL,
-  `anio_publicacion` int(11) DEFAULT NULL
+  `anio_publicacion` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `libros`
+--
+
+INSERT INTO `libros` (`libro_id`, `titulo`, `autor`, `genero`, `anio_publicacion`) VALUES
+(1, 'la lechuza', 'yo mismo', 'comedia', '2024-08-15');
 
 -- --------------------------------------------------------
 
@@ -49,6 +56,13 @@ CREATE TABLE `miembros` (
   `fecha_suscripcion` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `miembros`
+--
+
+INSERT INTO `miembros` (`miembro_id`, `nombre`, `apellido`, `email`, `fecha_suscripcion`) VALUES
+(1, 'xavier ', 'torres', 'xavier@hotmail.com', '2024-08-15');
+
 -- --------------------------------------------------------
 
 --
@@ -62,6 +76,13 @@ CREATE TABLE `prestamos` (
   `fecha_prestamo` date NOT NULL,
   `fecha_devolucion` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `prestamos`
+--
+
+INSERT INTO `prestamos` (`prestamo_id`, `libro_id`, `miembro_id`, `fecha_prestamo`, `fecha_devolucion`) VALUES
+(2, 1, 1, '2024-08-15', '2024-08-18');
 
 --
 -- Índices para tablas volcadas
@@ -96,19 +117,19 @@ ALTER TABLE `prestamos`
 -- AUTO_INCREMENT de la tabla `libros`
 --
 ALTER TABLE `libros`
-  MODIFY `libro_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `libro_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `miembros`
 --
 ALTER TABLE `miembros`
-  MODIFY `miembro_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `miembro_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  MODIFY `prestamo_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `prestamo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas

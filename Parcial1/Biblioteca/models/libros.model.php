@@ -1,44 +1,38 @@
 <?php
 require_once('../config/config.php');
+
 class Libros
 {
-    public function todos()
+    public function todos() //select * from libros
     {
         $con = new ClaseConectar();
         $con = $con->ProcedimientoParaConectar();
         $cadena = "SELECT * FROM `libros`";
-        $stmt = $con->prepare($cadena);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $datos = mysqli_query($con, $cadena);
         $con->close();
-        return $result;
+        return $datos;
     }
 
-    public function uno($libro_id)
+    public function uno($libro_id) //select * from libros where libro_id = $libro_id
     {
         $con = new ClaseConectar();
         $con = $con->ProcedimientoParaConectar();
-        $cadena = "SELECT * FROM `libros` WHERE `libro_id` = ?";
-        $stmt = $con->prepare($cadena);
-        $stmt->bind_param("i", $libro_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $cadena = "SELECT * FROM `libros` WHERE `libro_id` = $libro_id";
+        $datos = mysqli_query($con, $cadena);
         $con->close();
-        return $result;
+        return $datos;
     }
 
-    public function insertar($titulo, $autor, $genero, $anio_publicacion)
+    public function insertar($titulo, $autor, $genero, $anio_publicacion) //insert into libros
     {
         try {
             $con = new ClaseConectar();
             $con = $con->ProcedimientoParaConectar();
-            $cadena = "INSERT INTO `libros` (`titulo`, `autor`, `genero`, `anio_publicacion`) VALUES (?, ?, ?, ?)";
-            $stmt = $con->prepare($cadena);
-            $stmt->bind_param("sssi", $titulo, $autor, $genero, $anio_publicacion);
-            if ($stmt->execute()) {
+            $cadena = "INSERT INTO `libros`(`titulo`, `autor`, `genero`, `anio_publicacion`) VALUES ('$titulo','$autor','$genero','$anio_publicacion')";
+            if (mysqli_query($con, $cadena)) {
                 return $con->insert_id;
             } else {
-                return $stmt->error;
+                return $con->error;
             }
         } catch (Exception $th) {
             return $th->getMessage();
@@ -47,18 +41,16 @@ class Libros
         }
     }
 
-    public function actualizar($libro_id, $titulo, $autor, $genero, $anio_publicacion)
+    public function actualizar($libro_id, $titulo, $autor, $genero, $anio_publicacion) //update libros
     {
         try {
             $con = new ClaseConectar();
             $con = $con->ProcedimientoParaConectar();
-            $cadena = "UPDATE `libros` SET `titulo` = ?, `autor` = ?, `genero` = ?, `anio_publicacion` = ? WHERE `libro_id` = ?";
-            $stmt = $con->prepare($cadena);
-            $stmt->bind_param("sssii", $titulo, $autor, $genero, $anio_publicacion, $libro_id);
-            if ($stmt->execute()) {
+            $cadena = "UPDATE `libros` SET `titulo`='$titulo',`autor`='$autor',`genero`='$genero',`anio_publicacion`='$anio_publicacion' WHERE `libro_id` = $libro_id";
+            if (mysqli_query($con, $cadena)) {
                 return $libro_id;
             } else {
-                return $stmt->error;
+                return $con->error;
             }
         } catch (Exception $th) {
             return $th->getMessage();
@@ -67,18 +59,16 @@ class Libros
         }
     }
 
-    public function eliminar($libro_id)
+    public function eliminar($libro_id) //delete from libros
     {
         try {
             $con = new ClaseConectar();
             $con = $con->ProcedimientoParaConectar();
-            $cadena = "DELETE FROM `libros` WHERE `libro_id` = ?";
-            $stmt = $con->prepare($cadena);
-            $stmt->bind_param("i", $libro_id);
-            if ($stmt->execute()) {
+            $cadena = "DELETE FROM `libros` WHERE `libro_id` = $libro_id";
+            if (mysqli_query($con, $cadena)) {
                 return 1;
             } else {
-                return $stmt->error;
+                return $con->error;
             }
         } catch (Exception $th) {
             return $th->getMessage();
